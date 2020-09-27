@@ -1,6 +1,8 @@
+import 'package:expense_app/widgets/add_transaction_card.dart';
+import 'package:expense_app/widgets/transaction_list.dart';
 import 'package:flutter/material.dart';
 
-import './transaction.dart';
+import 'models/transaction.dart';
 
 void main() => runApp(MyApp());
 
@@ -14,53 +16,65 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatelessWidget {
-  final List<Transaction> listOfTransactions = [
-    Transaction('t1', 'New shoes', 99.99, DateTime.now()),
-    Transaction('t2', 'Grocery', 18.50, DateTime.now())
-  ];
+class MyHomePage extends StatefulWidget {
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  List<Transaction> listOfTransactions = [];
+
+  void addToListOfTransactions(Transaction tx) {
+    setState(() {
+      listOfTransactions.add(tx);
+    });
+  }
+
+  void startAddNewTransaction(BuildContext ctx) {
+    showModalBottomSheet(
+        context: ctx,
+        builder: (bCtx) {
+          return AddTransactionCard(
+            listOfTransactions: listOfTransactions,
+            addFunction: addToListOfTransactions,
+          );
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Flutter App'),
-        ),
-        body: Column(
-          children: <Widget>[
-            Container(
-              width: 100.0,
-              height: 100.0,
-              child: Card(
-                color: Colors.teal.shade100,
-                child: Text('Chart'),
-              ),
+      appBar: AppBar(
+        title: Text('Flutter App'),
+        actions: <Widget>[
+          IconButton(
+            onPressed: () {
+              startAddNewTransaction(context);
+            },
+            icon: Icon(Icons.add),
+          )
+        ],
+      ),
+      body: Column(
+        children: <Widget>[
+          Expanded(
+            flex: 1,
+            child: Text('This is the area for chart'),
+          ),
+          Expanded(
+            flex: 4,
+            child: TransactionList(
+              listOfTransactions: listOfTransactions,
             ),
-            Container(
-                child: Column(
-              children: listOfTransactions
-                  .map(
-                    (e) => Card(
-                      child: Row(
-                        children: <Widget>[
-                          Container(child: Text(e.amount.toString()),
-                          padding: EdgeInsets.all(10.0),),
-                          Container(
-                            padding: EdgeInsets.all(10.0),
-                            child: Column(
-                              children: <Widget>[
-                                Text(e.title),
-                                Text(e.dateTime.year.toString())
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  )
-                  .toList(),
-            ))
-          ],
-        ));
+          )
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          startAddNewTransaction(context);
+        },
+        child: Icon(Icons.add),
+      ),
+    );
   }
 }
