@@ -41,7 +41,7 @@ class AddTransactionCard extends StatelessWidget {
                 // onChanged: (value) {
                 //   titleValue = value;
                 // },
-                decoration: kInputDecoration.copyWith(labelText: 'Title'),
+                decoration: kInputDecorationFunction(context,'Title'),
               ),
             ),
             Padding(
@@ -56,7 +56,7 @@ class AddTransactionCard extends StatelessWidget {
                 // onChanged: (value) {
                 //   priceValue = double.parse(value);
                 // },
-                decoration: kInputDecoration.copyWith(labelText: 'Price'),
+                decoration: kInputDecorationFunction(context,'Price'),
               ),
             ),
             FlatButton(
@@ -68,7 +68,7 @@ class AddTransactionCard extends StatelessWidget {
               child: Text(
                 'Add Transaction',
                 style: TextStyle(
-                  color: Colors.purple,
+                  color: Theme.of(context).primaryColor,
                 ),
               ),
             )
