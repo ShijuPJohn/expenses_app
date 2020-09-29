@@ -12,12 +12,15 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Personal Expenses',
       home: MyHomePage(),
-      theme: ThemeData(primarySwatch: Colors.teal, fontFamily: 'QuickSand',
+      theme: ThemeData(
+          primarySwatch: Colors.teal,
+          fontFamily: 'QuickSand',
           appBarTheme: AppBarTheme(
-            textTheme: ThemeData.light().textTheme.copyWith(
-              headline6: TextStyle(fontFamily: 'OpenSans', fontWeight: FontWeight.w400, fontSize: 20.0)
-            )
-          )
+              textTheme: ThemeData.light().textTheme.copyWith(
+                  headline6: TextStyle(
+                      fontFamily: 'OpenSans',
+                      fontWeight: FontWeight.w400,
+                      fontSize: 20.0)))
           // accentColor: Colors.lightBlueAccent,
           ),
     );
@@ -55,8 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(
           'Flutter App',
-          style: TextStyle(
-          ),
+          style: TextStyle(),
         ),
         actions: <Widget>[
           IconButton(
@@ -75,9 +77,15 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           Expanded(
             flex: 4,
-            child: TransactionList(
-              listOfTransactions: listOfTransactions,
-            ),
+            child: listOfTransactions.length > 0
+                ? TransactionList(
+                    listOfTransactions: listOfTransactions,
+                  )
+                : Center(
+                    child: Image.asset(
+                    'assets/images/sad_face.png',
+                    height: 150,
+                  )),
           )
         ],
       ),
