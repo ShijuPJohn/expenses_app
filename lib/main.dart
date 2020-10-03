@@ -1,4 +1,5 @@
 import 'package:expense_app/widgets/add_transaction_card.dart';
+import 'package:expense_app/widgets/chart.dart';
 import 'package:expense_app/widgets/transaction_list.dart';
 import 'package:flutter/material.dart';
 
@@ -34,6 +35,12 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   List<Transaction> listOfTransactions = [];
+
+  List<Transaction> get _recentTransactions {
+    return listOfTransactions.where((element){
+      return element.dateTime.isAfter(DateTime.now().subtract(Duration(days: 7)));
+    })
+  }
 
   void addToListOfTransactions(Transaction tx) {
     setState(() {
@@ -73,7 +80,7 @@ class _MyHomePageState extends State<MyHomePage> {
         children: <Widget>[
           Expanded(
             flex: 1,
-            child: Text('This is the area for chart'),
+            child: Chart(),
           ),
           Expanded(
             flex: 4,
