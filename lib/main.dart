@@ -37,9 +37,13 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Transaction> listOfTransactions = [];
 
   List<Transaction> get _recentTransactions {
-    return listOfTransactions.where((element){
-      return element.dateTime.isAfter(DateTime.now().subtract(Duration(days: 7)));
-    })
+    return listOfTransactions.where((element) {
+      return element.dateTime.isAfter(
+        DateTime.now().subtract(
+          Duration(days: 7),
+        ),
+      );
+    }).toList();
   }
 
   void addToListOfTransactions(Transaction tx) {
@@ -80,7 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
         children: <Widget>[
           Expanded(
             flex: 1,
-            child: Chart(),
+            child: Chart(recentTransactions: _recentTransactions),
           ),
           Expanded(
             flex: 4,
