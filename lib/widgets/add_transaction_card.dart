@@ -1,16 +1,24 @@
 import 'package:expense_app/models/transaction.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../constants.dart';
 
 var _controllerTitle = TextEditingController();
 var _controllerPrice = TextEditingController();
 
-class AddTransactionCard extends StatelessWidget {
+class AddTransactionCard extends StatefulWidget {
   final List<Transaction> listOfTransactions;
   final Function addFunction;
 
   AddTransactionCard({this.listOfTransactions, this.addFunction});
+
+  @override
+  _AddTransactionCardState createState() => _AddTransactionCardState();
+}
+
+class _AddTransactionCardState extends State<AddTransactionCard> {
+  DateTime dateTime = DateTime.now();
 
   void addTransaction() {
     double enteredAmount;
@@ -23,9 +31,26 @@ class AddTransactionCard extends StatelessWidget {
     if (enteredTitle.isEmpty || enteredAmount <= 0) {
       return;
     }
-    addFunction(Transaction('t3', enteredTitle, enteredAmount, DateTime.now()));
+    widget
+        .addFunction(Transaction('t3', enteredTitle, enteredAmount, dateTime));
     _controllerPrice.clear();
     _controllerTitle.clear();
+  }
+
+  void _presentDatePicker(BuildContext ctx) {
+    showDatePicker(
+            context: ctx,
+            initialDate: DateTime.now(),
+            firstDate: DateTime(2019),
+            lastDate: DateTime.now())
+        .then((value) {
+      if (value == null) {
+        return;
+      }
+      setState(() {
+        dateTime = value;
+      });
+    });
   }
 
   @override
@@ -41,7 +66,7 @@ class AddTransactionCard extends StatelessWidget {
                 // onChanged: (value) {
                 //   titleValue = value;
                 // },
-                decoration: kInputDecorationFunction(context,'Title'),
+                decoration: kInputDecorationFunction(context, 'Title'),
               ),
             ),
             Padding(
@@ -56,10 +81,35 @@ class AddTransactionCard extends StatelessWidget {
                 // onChanged: (value) {
                 //   priceValue = double.parse(value);
                 // },
-                decoration: kInputDecorationFunction(context,'Price'),
+                decoration: kInputDecorationFunction(context, 'Price'),
               ),
             ),
-            FlatButton(
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(DateFormat('yyyy-MM-dd').format(dateTime)),
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 10.0),
+                    height: 50.0,
+                    child: RaisedButton(
+                      onPressed: () {
+                        _presentDatePicker(context);
+                      },
+                      color: Theme.of(context).primaryColor,
+                      child: Text(
+                        'Pick Date',
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            RaisedButton(
+              color: Theme.of(context).primaryColor,
               padding: EdgeInsets.all(10.0),
               onPressed: () {
                 addTransaction();
@@ -68,7 +118,7 @@ class AddTransactionCard extends StatelessWidget {
               child: Text(
                 'Add Transaction',
                 style: TextStyle(
-                  color: Theme.of(context).primaryColor,
+                  color: Colors.white,
                 ),
               ),
             )

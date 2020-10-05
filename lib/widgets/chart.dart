@@ -20,7 +20,6 @@ class Chart extends StatelessWidget {
           totalSum += recentTransactions[i].amount;
         }
       }
-
       return ChartData(
           DateFormat.E().format(weekDay).substring(0, 2), totalSum);
     });
@@ -42,19 +41,21 @@ class Chart extends StatelessWidget {
     return Card(
       elevation: 6.0,
       margin: EdgeInsets.all(20.0),
-      child: SingleChildScrollView(
-        child: Row(
-          children: groupedTransactionValues.reversed.map((e) {
-            return Container(
-              padding: EdgeInsets.all(10.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: groupedTransactionValues.reversed.map((e) {
+          return Flexible(
+            fit: FlexFit.tight,
+            child: Container(
+              padding: EdgeInsets.all(12.0),
               child: ChartBar(
                 weekDay: e.day,
                 amountForTheDay: e.amount,
                 totalAmount: totalAmountForTheWeek,
               ),
-            );
-          }).toList(),
-        ),
+            ),
+          );
+        }).toList(),
       ),
     );
   }

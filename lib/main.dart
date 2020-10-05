@@ -63,6 +63,12 @@ class _MyHomePageState extends State<MyHomePage> {
         });
   }
 
+  void deleteFunction(int index) {
+    setState(() {
+      listOfTransactions.removeAt(index);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,16 +87,19 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Expanded(
-            flex: 1,
-            child: Chart(recentTransactions: _recentTransactions),
+            flex: 2,
+            child:
+                Center(child: Chart(recentTransactions: _recentTransactions)),
           ),
           Expanded(
             flex: 4,
             child: listOfTransactions.length > 0
                 ? TransactionList(
                     listOfTransactions: listOfTransactions,
+                    deleteCallback: deleteFunction,
                   )
                 : Center(
                     child: Image.asset(
